@@ -7,7 +7,7 @@ window.OQBackend = (() => {
   const call = async (promise) => { const {data,error}=await promise; if(error) throw error; return data; };
   return {
     enabled:true, db,
-    signUp: (email,password,displayName) => call(db.auth.signUp({email,password,options:{data:{display_name:displayName}}})),
+    signUp: (email,password,displayName) => call(db.auth.signUp({email,password,options:{data:{display_name:displayName},emailRedirectTo:`${window.location.origin}${window.location.pathname}`}})),
     signIn: (email,password) => call(db.auth.signInWithPassword({email,password})),
     signOut: () => call(db.auth.signOut()),
     session: () => db.auth.getSession(),
