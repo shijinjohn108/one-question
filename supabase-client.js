@@ -11,7 +11,7 @@ window.OQBackend = (() => {
     signIn: (email,password) => call(db.auth.signInWithPassword({email,password})),
     signOut: () => call(db.auth.signOut()),
     session: () => db.auth.getSession(),
-    myProfile: () => call(db.from('profiles').select('id,display_name,public_id,role,streak,created_at').single()),
+    myProfile: async () => { const rows = await call(db.rpc('my_profile')); if (!rows?.[0]) throw new Error('Your account profile is not available yet. Please try again in a moment.'); return rows[0]; },
     myAnswer: questionId => call(db.rpc('my_answer',{p_question_id:questionId})),
     archive: () => call(db.rpc('question_archive')),
     myStats: () => call(db.rpc('my_profile_stats')),
