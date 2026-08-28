@@ -13,6 +13,8 @@ window.OQBackend = (() => {
     session: () => db.auth.getSession(),
     myProfile: () => call(db.from('profiles').select('id,display_name,public_id,role,streak,created_at').single()),
     myAnswer: questionId => call(db.rpc('my_answer',{p_question_id:questionId})),
+    archive: () => call(db.rpc('question_archive')),
+    myStats: () => call(db.rpc('my_profile_stats')),
     today: () => call(db.from('questions').select('id,prompt,opens_at,closes_at,question_options(id,label,position)').eq('status','live').order('opens_at',{ascending:false}).limit(1).single()),
     answer: (questionId,optionId,userId) => call(db.from('answers').insert({question_id:questionId,option_id:optionId,user_id:userId})),
     results: questionId => call(db.rpc('question_results',{p_question_id:questionId})),
